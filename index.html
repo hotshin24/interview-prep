@@ -574,7 +574,7 @@ body.sheet-open .scrim{opacity:1;pointer-events:auto;}
 <li class="toc-q"><a href="#q60" data-id="q60"><span class="q-num">59</span><span class="q-label">:not(:nth-of-type(Nn)) 대신 gap/Grid를 안 쓴 이유</span><span class="m hot">🔥</span></a></li>
 <li class="toc-q"><a href="#q61" data-id="q61"><span class="q-num">60</span><span class="q-label">nth-of-type vs nth-child</span></a></li>
 <li class="toc-q"><a href="#q62" data-id="q62"><span class="q-num">61</span><span class="q-label">JWA 767/1279를 버리고 1280/768/480으로 바꾼 이유</span><span class="m hot">🔥</span></a></li>
-<li class="toc-q"><a href="#q63" data-id="q63"><span class="q-num">62</span><span class="q-label">실기기 테스트</span></a></li>
+<li class="toc-q"><a href="#q63" data-id="q63"><span class="q-num">62</span><span class="q-label">5구간을 어떻게 검증했나 / 실기기 테스트</span></a></li>
 <li class="toc-group"><a href="#s5-g4" data-id="s5-g4"><span class="g-num">4-4</span>디자인 토큰</a></li>
 <li class="toc-q"><a href="#q64" data-id="q64"><span class="q-num">63</span><span class="q-label">하드코딩 0건에 white 키워드도 포함했나</span><span class="m warn">⚠️</span><span class="m hot">🔥</span></a></li>
 <li class="toc-q"><a href="#q65" data-id="q65"><span class="q-num">64</span><span class="q-label">의미 토큰 9종 선언 · 실참조 0회</span><span class="m warn">⚠️</span><span class="m hot">🔥</span></a></li>
@@ -1013,7 +1013,7 @@ body.sheet-open .scrim{opacity:1;pointer-events:auto;}
 <article class="qa" id="q22">
 <h4 class="qa-title"><span class="qa-num">21</span><span class="qa-text">독학의 한계를 느낀 지점</span></h4>
 <div class="qa-body">
-<div class="answer"><span class="a-chip">A</span><div class="a-body">두 가지였습니다.<br>① <strong>검증 환경의 한계</strong> — 개발 환경 미리보기 창은 폭을 768px 이하로 줄여도 CSS는 1560px 값을 받습니다. 화면은 좁아 보이는데 모바일 실측이 안 됩니다. 이건 HOOT UP PRD 제약사항에 그대로 적어뒀고, 배포본과 실기기로 따로 확인하는 절차로 대응했습니다.<br>② <strong>리뷰어 부재</strong> — 혼자 진행한 프로젝트라 제 판단을 바로 피드백해줄 사람이 없었습니다. 그래서 가능한 부분은 검증 도구를 활용해 보완했습니다. W3C validator, Lighthouse, axe로 돌리면 제 눈이 놓친 것이 나옵니다. HOOT UP 첫 지적 항목이 메타 description 끝의 <code>)</code> 오류였는데, 육안으로는 정상이고 validator로만 잡히는 것이었습니다.<br>▸ <strong>여기서 지원 이유로 연결</strong>: &quot;그래서 팀에서 리뷰받으며 일하고 싶습니다.&quot;</div></div>
+<div class="answer"><span class="a-chip">A</span><div class="a-body">두 가지였습니다.<br>① <strong>검증 환경의 한계</strong> — 로컬 도구의 판정을 최종으로 믿으면 안 된다는 걸 두 번 겪었습니다. 로컬 axe가 어두운 배경의 대비 회귀를 통과로 판정했는데 배포본 Lighthouse에서는 위반 45건이 나왔습니다. 그래서 배포본과 실기기로 다시 확인하는 절차를 넣었습니다.<br>▸ <em>(미리보기 창 폭 오보고 건은 62번 참조 — 도구를 특정하지 못하면 꺼내지 마세요.)</em><br>② <strong>리뷰어 부재</strong> — 혼자 진행한 프로젝트라 제 판단을 바로 피드백해줄 사람이 없었습니다. 그래서 가능한 부분은 검증 도구를 활용해 보완했습니다. W3C validator, Lighthouse, axe로 돌리면 제 눈이 놓친 것이 나옵니다. HOOT UP 첫 지적 항목이 메타 description 끝의 <code>)</code> 오류였는데, 육안으로는 정상이고 validator로만 잡히는 것이었습니다.<br>▸ <strong>여기서 지원 이유로 연결</strong>: &quot;그래서 팀에서 리뷰받으며 일하고 싶습니다.&quot;</div></div>
 </div></article>
 <article class="qa" id="q23">
 <h4 class="qa-title"><span class="qa-num">22</span><span class="qa-text">팀 경험</span></h4>
@@ -1280,9 +1280,15 @@ gap: 36px;</code></pre></figure>
 <div class="answer"><span class="a-chip">A</span><div class="a-body">JWA 기준이 틀린 게 아니라 <strong>프로젝트가 다르기 때문</strong>입니다.<br>JWA는 와이드 모니터 사용 비중이 높은 럭셔리 커머스라 데스크탑 세분화가 필요했습니다. HOOT UP은 이러닝 플랫폼이고, 실사용자가 퇴근 후 모바일로 들어오는 서비스로 설정했습니다. 페르소나 A(31세 마케터, 퇴근 후 탐색), B(27세 N잡러)가 그 근거입니다.<br>그래서 <strong>480px 초소형 구간을 추가</strong>하고 데스크탑 세분화를 버렸습니다.<br>그리고 실무적 이유가 하나 더 있습니다. 착수 당시 미디어쿼리가 <strong>혼재 6종</strong>으로 늘어나 있었습니다. 767/1279 계열과 다른 값이 섞이면서 어느 구간이 진짜인지 불분명해졌고, 08-09에 3단으로 통일했습니다(CH-RWD-01).<br>▸ <strong>면접에서 강조할 문장</strong>: &quot;이전 프로젝트 기준을 관성으로 승계하지 않고, 프로젝트마다 다시 정하는 게 맞다고 판단했습니다.&quot;</div></div>
 </div></article>
 <article class="qa" id="q63">
-<h4 class="qa-title"><span class="qa-num">62</span><span class="qa-text">실기기 테스트</span></h4>
+<h4 class="qa-title"><span class="qa-num">62</span><span class="qa-text">5구간을 어떻게 검증했나 / 실기기 테스트</span></h4>
 <div class="qa-body">
-<div class="answer"><span class="a-chip">A</span><div class="a-body">배포본을 실제 폰으로 확인했습니다. 그리고 <strong>그렇게 할 수밖에 없었던 이유</strong>를 PRD 제약사항에 적어뒀습니다.<br>개발 환경 미리보기 창은 폭을 768px 이하로 줄여도 페이지에 1560px 폭이라고 알립니다. 화면은 좁아 보이는데 CSS가 받는 값은 데스크탑이라 모바일 실측이 불가능합니다.<br>그래서 검증을 두 층으로 나눴습니다.<br>① <strong>구조 검증</strong> — <code>getComputedStyle</code>, <code>scrollWidth</code>, DOM 상태로 확인. 가로 스크롤 미발생을 768·1024·1280에서 실측 0으로 확인했습니다.<br>② <strong>실기기 항목</strong> — 패딩 침범, 터치 타깃은 배포본 + 폰에서 별도 확인<br>같은 성격의 사고가 08-15에도 있었습니다. <strong>로컬 axe가 어두운 배경의 대비 회귀를 통과로 판정</strong>했는데, 배포본 Lighthouse로 측정하니 위반 45건이 나왔습니다. 로컬 도구를 믿으면 안 된다는 걸 두 번 확인한 셈입니다.</div></div>
+<div class="answer"><span class="a-chip">A</span><div class="a-body">요구사항에 검증 항목을 먼저 박아두고, 그 항목을 하나씩 확인하는 방식이었습니다. PRD 8.1에 네 가지로 적어뒀습니다.</div></div>
+<div class="table-wrap"><table><thead><tr><th>ID</th><th>검증 항목</th></tr></thead><tbody><tr><td>NFR-RWD-01</td><td>base 레이어에 공통값, 미디어쿼리는 예외만</td></tr><tr><td>NFR-RWD-02</td><td>전 브레이크포인트에서 <strong>가로 스크롤 미발생</strong></td></tr><tr><td>NFR-RWD-03</td><td><strong>터치 타깃 최소 44×44px</strong> 확보</td></tr><tr><td>NFR-RWD-04</td><td><strong>경계값에서 레이아웃 점프 없음</strong> — 767/768 · 1279/1280 · 1500/1501 · 1890/1891</td></tr></tbody></table></div>
+<p><strong>NFR-RWD-04가 이 프로젝트에서 제일 중요한 항목이었습니다.</strong> 구간이 5개면 경계가 4개인데, 각 구간 안쪽만 보면 멀쩡한데 경계를 넘는 순간 열 수가 튀거나 여백이 어긋나는 일이 생깁니다. 그래서 구간 중앙이 아니라 <strong>경계 양쪽 1px 차이로</strong> 확인했습니다. 767과 768, 1890과 1891을 붙여서 봅니다.</p>
+<p>확인 방법은 [본인이 실제로 쓴 도구 — 예: Chrome 개발자도구 기기 툴바 반응형 모드로 폭을 직접 입력]이었고, 실기기는 [실제로 확인한 기기 — 예: 본인 폰 기종 / iOS Safari · Android Chrome]로 배포본을 열어 확인했습니다.</p>
+<div class="tip"><span class="tip-mark" aria-hidden="true">▸</span><div><strong>꼬리질문 &quot;실기기에서만 나오는 문제가 있었나요?&quot;</strong> — 대비하려면 답이 필요한 자리입니다. 문서에 근거가 있는 항목은 <strong>모바일 헤더의 화살표 아이콘</strong>입니다. 아이콘이 터치를 가로채서 메뉴가 안 열리는 문제가 있어 <code>pointer-events: none</code>을 줬습니다. 데스크탑 마우스로는 안 드러나고 손가락으로 눌러야 나오는 유형입니다.</div></div>
+<div class="tip"><span class="tip-mark" aria-hidden="true">▸</span><div><strong>호환성 범위도 함께 말씀하세요</strong> — Chrome · Edge · Safari · Firefox 최신 2개 버전, iOS Safari, Android Chrome (PRD 8.5). 범위를 정해두지 않으면 &quot;어디까지 봤나&quot;에 답할 수 없습니다.</div></div>
+<div class="tip"><span class="tip-mark" aria-hidden="true">▸</span><div><strong>말하지 말 것</strong>: 개발 툴 내장 미리보기 패널의 폭 오보고 이야기는 <strong>HOOT UP 쪽 기록</strong>입니다. JWA는 직접 작성한 프로젝트라 해당 사항이 없습니다. 두 프로젝트의 제약을 섞으면 바로 들통납니다.</div></div>
 </div></article>
 <h3 class="group-title" id="s5-g4"><span class="group-num">4-4</span>디자인 토큰</h3>
 <article class="qa is-hot is-warn" id="q64">
